@@ -1,3 +1,5 @@
 # Calc
 
-  A general-purpose console-log-like calculator. Supports most common mathematical expressions, including variable declarations.
+  A general-purpose interactive calculator. Supports most common mathematical expressions, including variable declarations and expressions.
+  
+  Enter 'exit' or press ctrl-c to quit.
