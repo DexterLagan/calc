@@ -1,6 +1,6 @@
 # Calc
 
-  A general-purpose interactive calculator. Supports most common mathematical operations, including variable declarations and expression evaluation.
+  A general-purpose interactive calculator. Supports most mathematical operations, including variable declarations and expression evaluation.
   
   Enter 'exit' or press ctrl-c to quit.
   
