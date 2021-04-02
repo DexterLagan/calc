@@ -20,8 +20,8 @@
 
 ;; generic about message
 (define (about)
-  (echo "Calc v" *version* " Interactive calculator with support for variables.\n"
-        "Type 'exit' or press ctrl-c to quit."))
+  (echo "Calc v" *version* " - interactive calculator with support for variables\n"
+        "Type 'exit' or press ctrl-c to quit"))
 
 ;; define a global namespace to allow input-loop eval to understand our commands
 (define-namespace-anchor a)
