@@ -1,8 +1,45 @@
 #lang racket/base
+(require racket/port)
+(require racket/string)
+(require racket/format)
 
-;; An interactive calculator inspired by the calculator example in the bison manual.
+;;; purpose
 
-;; Import the parser and lexer generators.
+; An interactive calculator with support for variables.
+
+;;; consts
+
+(define *version* "1.0")
+
+;;; defs
+
+;; better displayln/string-append
+(define echo
+  (λ args
+    (displayln (apply ~a args))))
+
+;; generic about message
+(define (about)
+  (echo "Calc v" *version* " Interactive calculator with support for variables.\n"
+        "Type 'exit' or press ctrl-c to quit."))
+
+;; define a global namespace to allow input-loop eval to understand our commands
+(define-namespace-anchor a)
+(define input-loop-ns (namespace-anchor->namespace a))
+
+;; double string-replace
+(define (string-replace2 s p1 p2 r1 r2)
+  (string-replace (string-replace s p1 r1) p2 r2))
+
+;; clean up entry from line-feeds and carriage returns
+(define (clean-up command)
+  (string-trim (string-replace2 command "\n" "\r" "" "")))
+
+;; display a nice prompt with the current directory
+(define (display-prompt)
+  (display "> "))
+
+;; import the parser and lexer generators.
 (require parser-tools/yacc
          parser-tools/lex
          (prefix-in : parser-tools/lex-sre))
@@ -67,8 +104,8 @@
            "Unexpected token: ~a~a\nparser-state = ~v"
            tok-name
            (if tok-value
-             (format "(~a)" tok-value)
-             "")
+               (format "(~a)" tok-value)
+               "")
            se))))
 
    (precs (right =)
@@ -142,5 +179,37 @@
   (no "=1"
       "missing lhs of eq"))
 
+;; evaluates a string with the calculator
+(define (run s)
+  (display
+   (with-output-to-string
+     (λ ()
+       (with-handlers
+           ([exn:fail?
+             (λ (x)
+               (displayln (exn-message x)))])
+         (calc (open-input-string s)))))))
+
+;; input loop
+(define (input-loop)
+  (let/ec break
+    (let loop ()
+      ; display command prompt
+      (display-prompt)                                                                         
+      ; get input from user; trim and remove annoying enters and returns
+      (define command
+        (clean-up (read-line)))
+      (cond [(string=? command "") (loop)]
+            [(string-prefix? command "exit") (break)]
+            [else (run command)])
+      (loop))))
+
+;;; main
+
 (module+ main
-  (calc (current-input-port)))
+  (about)
+  (newline)
+  (input-loop))
+
+
+; EOF
