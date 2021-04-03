@@ -7,4 +7,4 @@
 <p align="center"><img src="screenshot/screenshot.png"></p>
 
 ## Downloads
-You can <b>download</b> the latest release for <b>Windows</b> [HERE](https://github.com/DexterLagan/calc/releases).
+You can <b>download</b> the latest release for <b>Windows</b> as a portable, standalone executable [HERE](https://github.com/DexterLagan/calc/releases).
